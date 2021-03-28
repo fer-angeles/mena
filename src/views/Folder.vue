@@ -19,6 +19,10 @@
       <div id="container">
         <strong class="capitalize">{{ $route.params.id }}</strong>
         <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+
+        <p>
+          <button @click="Logout">Salir</button>
+        </p>
       </div>
     </ion-content>
   </ion-page>
@@ -26,6 +30,7 @@
 
 <script lang="ts">
 import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import firebase from "firebase";
 
 export default {
   name: 'Folder',
@@ -37,6 +42,22 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar
+  },
+  setup() {
+
+    const Logout = () =>{
+
+      firebase
+          .auth()
+          .signOut()
+          .then(() => console.log("salio"))
+          .catch( (err) => console.log(err.message))
+
+    }
+
+    return {
+      Logout
+    }
   }
 }
 </script>

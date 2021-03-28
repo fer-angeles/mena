@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
+import { RouteRecordRaw, useRouter, useRoute } from 'vue-router';
+import firebase from "firebase";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,6 +10,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/folder/:id',
     component: () => import ('../views/Folder.vue')
+  },
+  {
+    path: '/login',
+    component: () => import ('../views/Login.vue')
   }
 ]
 

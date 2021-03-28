@@ -1,7 +1,7 @@
 <template>
   <IonApp>
-    <IonSplitPane content-id="main-content">
-      <ion-menu content-id="main-content" type="overlay">
+    <IonSplitPane content-id="main-content" >
+      <ion-menu content-id="main-content" type="overlay" v-show="showMenu">
         <ion-content>
           <ion-list id="inbox-list">
             <ion-list-header>Inbox</ion-list-header>
@@ -32,8 +32,9 @@
 
 <script lang="ts">
 import { IonApp, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterOutlet, IonSplitPane } from '@ionic/vue';
-import { defineComponent, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { defineComponent, ref , onBeforeMount } from 'vue';
+import { useRouter, useRoute  } from 'vue-router';
+import firebase from "firebase";
 import { archiveOutline, archiveSharp, bookmarkOutline, bookmarkSharp, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
 
 export default defineComponent({
@@ -53,6 +54,22 @@ export default defineComponent({
     IonSplitPane,
   },
   setup() {
+    const route = useRoute();
+    const router = useRouter();
+
+    onBeforeMount( () => {
+      firebase.auth().onAuthStateChanged( ( user ) => {
+        if( !user )
+        {
+          router.replace('/login');
+        }
+        else
+        {
+          router.replace('/');
+        }
+      });
+    });
+
     const selectedIndex = ref(0);
     const appPages = [
       {
@@ -98,8 +115,6 @@ export default defineComponent({
     if (path !== undefined) {
       selectedIndex.value = appPages.findIndex(page => page.title.toLowerCase() === path.toLowerCase());
     }
-
-    const route = useRoute();
 
     return {
       selectedIndex,
